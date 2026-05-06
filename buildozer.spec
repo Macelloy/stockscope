@@ -17,6 +17,8 @@ android.api = 33
 android.minapi = 26
 android.ndk = 25b
 android.archs = arm64-v8a
+android.sdk_tools_version = 34.0.0
+android.accept_sdk_license = True
 
 # Buildozer
 log_level = 2
