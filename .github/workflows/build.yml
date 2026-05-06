@@ -16,7 +16,7 @@ jobs:
 
       - name: Build APK
         run: |
-          sed -i 's/def check_root/def check_root_disabled/' /home/user/.venv/lib/python3.12/site-packages/buildozer/__init__.py
+          sed -i 's/self.check_root()/pass  # skip root check/' /home/user/.venv/lib/python3.12/site-packages/buildozer/__init__.py
           buildozer -v android debug
 
       - name: Upload APK
