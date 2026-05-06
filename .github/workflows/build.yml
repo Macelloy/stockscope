@@ -33,6 +33,14 @@ jobs:
           pip install --upgrade pip
           pip install buildozer cython
 
+      - name: Accept Android SDK licenses
+        run: |
+          mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
+          printf "\n24333f8a63b6825ea9c5514f83c2829b004d1fee\n" \
+            > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
+          printf "\n84831b9409646a918e30573bab4c9c91346d8abd\n" \
+            > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
+
       - name: Cache buildozer global directory
         uses: actions/cache@v4
         with:
@@ -41,7 +49,7 @@ jobs:
           restore-keys: buildozer-
 
       - name: Build APK
-        run: buildozer -v android debug
+        run: yes | buildozer -v android debug
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
