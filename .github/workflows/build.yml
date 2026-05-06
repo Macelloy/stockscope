@@ -8,15 +8,18 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
+    container: kivy/buildozer
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Build with mobile-dev-inc action
-        uses: mobile-dev-inc/action-buildozer@v1.2.0
-        with:
-          command: buildozer android debug
+      - name: Install missing deps and build
+        run: |
+          apt-get update -qq
+          apt-get install -y autoconf automake gettext libtool
+          sed -i 's/self.check_root()/pass/' /home/user/.venv/lib/python3.12/site-packages/buildozer/__init__.py
+          buildozer -v android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
