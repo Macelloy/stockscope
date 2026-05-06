@@ -27,12 +27,31 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y \
-            git zip unzip autoconf libtool pkg-config \
-            zlib1g-dev libncurses5-dev libncursesw5-dev \
-            libtinfo5 cmake libffi-dev libssl-dev ccache lld
+          sudo apt-get install -y git zip unzip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev ccache lld
 
-      - name: Install buildozer and p4a
+      - name: Install buildozer
+        run: pip install --upgrade pip buildozer cython python-for-android
+
+      - name: Accept SDK licenses
         run: |
-          pip install --upgrade pip
-          pip install b
+          mkdir -p $ANDROID_SDK_ROOT/licenses
+          printf "\n24333f8a63b6825ea9c5514f83c2829b004d1fee\n" > $ANDROID_SDK_ROOT/licenses/android-sdk-license
+          printf "\n84831b9409646a918e30573bab4c9c91346d8abd\n" > $ANDROID_SDK_ROOT/licenses/android-sdk-preview-license
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0" "platforms;android-33" "platform-tools" || true
+
+      - name: Symlink SDK for buildozer
+        run: |
+          mkdir -p ~/.buildozer/android/platform
+          ln -sf $ANDROID_SDK_ROOT ~/.buildozer/android/platform/android-sdk
+          mkdir -p ~/.buildozer/android/platform/android-sdk/tools/bin
+          ln -sf $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager
+
+      - name: Build APK
+        run: buildozer -v android debug
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: StockScope-APK
+          path: bin/*.apk
+          if-no-files-found: error
