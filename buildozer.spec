@@ -24,4 +24,4 @@ android.ndk_path = /usr/local/lib/android/sdk/ndk/27.3.13750724
 
 # Buildozer
 log_level = 2
-warn_on_root = 1
+warn_on_root = 0
