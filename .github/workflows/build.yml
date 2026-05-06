@@ -39,6 +39,8 @@ jobs:
           echo "$HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
 
       - name: Accept Android licenses
+        env:
+          JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
         run: |
           yes | sdkmanager --licenses
           sdkmanager "build-tools;34.0.0" "platforms;android-33" "platform-tools"
