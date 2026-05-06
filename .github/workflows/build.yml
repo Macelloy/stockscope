@@ -14,6 +14,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install missing dependencies
+        run: |
+          apt-get update -qq
+          apt-get install -y autoconf automake gettext libtool
+
       - name: Build APK
         run: |
           sed -i 's/self.check_root()/pass  # skip root check/' /home/user/.venv/lib/python3.12/site-packages/buildozer/__init__.py
