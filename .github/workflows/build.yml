@@ -17,7 +17,7 @@ jobs:
       - name: Install missing deps and build
         run: |
           apt-get update -qq
-          apt-get install -y autoconf automake gettext libtool
+          apt-get install -y autoconf automake autopoint gettext libtool
           find / -name "__init__.py" -path "*/buildozer/__init__.py" 2>/dev/null | xargs -I{} sed -i 's/self.check_root()/pass/' {}
           buildozer -v android debug
 
