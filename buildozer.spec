@@ -6,7 +6,7 @@ source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 1.0
 
-requirements = python3,kivy==2.3.0,kivymd==1.2.0,yfinance,pandas,numpy,requests,urllib3,charset-normalizer,certifi,frozendict,multitasking,peewee,websockets
+requirements = python3,kivy==2.3.0,yfinance,pandas,numpy,requests,urllib3,charset-normalizer,certifi,frozendict,multitasking,peewee,websockets
 
 # Android orientation
 orientation = portrait

@@ -3,9 +3,6 @@ StockScope – Teknisk Analyse App
 """
 
 import threading
-import yfinance as yf
-import pandas as pd
-import numpy as np
 from datetime import datetime
 
 from kivy.app import App
@@ -78,6 +75,8 @@ def compute_ema200(prices):
     return prices.ewm(span=200).mean()
 
 def fetch_and_analyze(ticker):
+    import yfinance as yf
+    import pandas as pd
     t   = yf.Ticker(ticker)
     df  = t.history(period="1y")
     if df.empty:
@@ -634,7 +633,16 @@ class StockScopeApp(App):
     def build(self):
         Window.clearcolor = BG_DARK
         self.title = "StockScope"
-        return MainScreen()
+        try:
+            return MainScreen()
+        except Exception as e:
+            import traceback
+            err = BoxLayout(orientation="vertical", padding=dp(20))
+            err.add_widget(Label(
+                text=f"Startup error:\n{traceback.format_exc()}",
+                color=RED, font_size=sp(11), halign="left",
+            ))
+            return err
 
 if __name__ == "__main__":
     StockScopeApp().run()
